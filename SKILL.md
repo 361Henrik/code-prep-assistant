@@ -3,175 +3,134 @@ Code prep assistant — Henrik's foundational pre-flight before any Claude Code 
 # CODE PREP ASSISTANT
 ## Henrik Host / ThreeSixtyOne — Foundational Build Instantiation
 
-This skill is project-neutral. It runs the same way every time, for any project type:
-client work, own products, new ideas, quick tools, prototypes — all of them.
+This skill produces the best possible input for Claude Code.
+It is project-neutral. It runs the same way every time.
+The output is a fully loaded local project folder Claude Code opens cold and enters plan mode immediately.
 
 ---
 
-## WHAT IT COLLECTS
+## BEFORE THE CHECKPOINTS — ASK FOR DOCUMENTS FIRST
 
-- What we're building and why (brief / PRD)
-- Tech stack, auth, database, hosting
-- Design system and exact brand tokens
-- Environment variables and services needed
-- Content sources and local reference files
-- The exact build order and instruction for Claude Code
+Always start here before anything else:
 
-The output is a fully loaded local project folder.
-Claude Code opens it cold and enters plan mode immediately.
-No back and forth. No explaining context. No guessing.
+"Do you have anything to share before we start?
+A brief, PRD, design file, screenshot, brand guide, content doc, reference, or upload?
+Drop everything here first — I'll read it all before asking a single question."
 
----
-
-## BEFORE THE CHECKPOINTS — ASK FOR DOCUMENTS
-
-Before running any checkpoint, always ask:
-"Do you have anything to share? A brief, PRD, design file, screenshot, reference doc, or upload?
-Drop it here first and I'll read it before we start."
-
-Anything shared goes into `docs/` in the local project folder so Claude Code can reference it directly.
-This includes: uploaded PDFs, Google Doc links, Notion pages, screenshots, design files, content drafts, brand guides, anything.
+Read every document shared. Extract relevant information into the checkpoints automatically.
+Save all documents to docs/ in the local project folder.
+Name them clearly: brief.md, content.md, brand-guide.md, user-research.md, design-ref.md, etc.
+Claude Code reads everything in docs/ before writing a single line.
 
 ---
 
-## HOW IT RUNS
+## ALSO CHECK — EXISTING CODEBASE
 
-Work through 8 checkpoints in order.
-For each: ask if it's already done.
-- YES — take it, move on
-- NO — ask ONE targeted question to fill the gap. Never more than one at a time.
+Ask: "Does a codebase already exist for this project, or are we starting from scratch?"
 
-Target: done in under 10 minutes.
+- EXISTING — ask for the repo URL and local path. Note what's already built so Claude Code doesn't rebuild it.
+- SCRATCH — proceed. Claude Code starts fresh.
+
+---
+
+## 10 CHECKPOINTS
+
+Work through all 10 in order.
+For each: ask if it's already known or done.
+- YES / already in documents — take it, move on.
+- NO — ask ONE targeted question. Never more than one at a time.
+
+Target: done in under 15 minutes.
 
 ---
 
 ## CHECKPOINT 1 — THE BRIEF
 
-Ask: "Do you have a brief, PRD, or description of what we're building?"
+"Do you have a brief, PRD, or description of what we're building?"
 
-- YES — take it (paste, doc link, or summary). Extract: what it does, who it's for, core purpose.
-- NO — ask: "Give me the idea in 2-3 sentences." Structure into a one-paragraph brief.
+- YES — extract from documents or paste. Pull: what it does, who it's for, core purpose.
+- NO — "Give me the idea in 2-3 sentences." Structure it into a one-paragraph brief.
 
-Capture: project name, one-sentence purpose, intended audience.
+Capture:
+- Project name
+- One-sentence purpose
+- Intended audience
+- Core problem it solves
+- Key outcome for the user
 
 ---
 
 ## CHECKPOINT 2 — CLARITY
 
-Ask: "Is the purpose, audience, and scope clear enough to start building?"
+"Is the purpose, audience, and scope clear enough to build from?"
 
 - YES — move on.
-- NO — ask the ONE most important missing question. Capture the answer. Move on.
-
-One question maximum.
+- NO — ask the ONE most important missing question. One only.
 
 ---
 
 ## CHECKPOINT 3 — RESEARCH
 
-Ask: "Does this need market or feasibility research before we start?"
+"Does this need feasibility or market research before we start?"
 
-- YES — run the research-gate skill, return here with findings.
-- NO — skip entirely.
-
-Most projects skip this.
+- YES — run research-gate skill. Return here with findings.
+- NO — skip.
 
 ---
 
 ## CHECKPOINT 4 — PRIORITY
 
-Ask: "Is this the right thing to build right now?"
+"Is this the right thing to build right now?"
 
 - YES — move on.
-- NOT SURE — quick score: real problem? feasible? fits current focus?
+- NOT SURE — score it: real problem? technically feasible? fits current focus?
   Rate HIGH / MEDIUM / LOW. Confirm before continuing.
 
 ---
 
 ## CHECKPOINT 5 — USER FLOW
 
-Ask: "Do you have a user flow or journey map for this?"
+"Do you have a user flow or journey map?"
 
-- YES — take it. Summarise the key steps.
-- NO — ask: "Who uses this? What's the first thing they do? What's the outcome?"
-  Build a 5-step flow from the answers.
+- YES — take it. Summarise into 5-7 numbered steps.
+- NO — ask: "Who uses this, what's the first thing they do, and what's the end outcome?"
+  Build the flow from the answers. Offer to run user-flow-mapper for a visual.
 
-Capture: core user journey as numbered list.
+Capture: numbered step-by-step user journey.
 
 ---
 
 ## CHECKPOINT 6 — SCREENS AND FEATURES
 
-Ask: "Do you know what screens or features this needs?"
+"Do you know what screens or features this needs?"
 
 - YES — take the list.
 - NO — derive from the user flow. List implied screens. Confirm: "Does this cover it?"
 
-Capture: numbered list of screens/sections in intended build order.
+Capture: numbered list of screens/sections in build order.
+Tag each as: MVP / Phase 2 / Later.
+MVP should be ruthlessly small — max 6 screens.
 
 ---
 
-## CHECKPOINT 7 — VISUAL REFERENCE
+## CHECKPOINT 7 — VISUAL REFERENCE AND DESIGN SYSTEM
 
-Ask: "Do you have a mockup, prototype, screenshot, or visual direction?"
+"Do you have a mockup, prototype, screenshot, or visual reference?"
 
-- YES — note the reference. Ask: "Should I build a clickable prototype first, or go straight to Claude Code?"
-- NO — ask: "Which design system applies to this project?"
-  Collect the exact tokens, fonts, and brand rules now.
-  If it's an own product: use ATLASdesign tokens.
-  If it's a client project: collect their brand system.
-  If it's new: note it — define during build.
+- YES — note it. Ask: "Should I build a clickable prototype before we hand off to Claude Code?"
+  If yes — run visualize-prototype skill. Approved prototype becomes a reference in docs/.
+- NO — ask: "Which design system applies?"
 
-Always offer: "Want me to generate a visual prototype before we hand off to Claude Code?"
+ALWAYS collect these regardless:
+- Primary colors (hex values)
+- Secondary / accent colors (hex values)
+- Background and surface colors (hex values)
+- Font for headings (name + weights)
+- Font for body text (name + weights)
+- Border radius default
+- Component rules (card, button, nav, inputs)
 
-Capture: design system name + complete token set + any visual reference.
-
----
-
-## CHECKPOINT 8 — TECHNICAL SETUP
-
-Always runs fully. Ask each item only if not already known.
-
-### 8a. Repo
-"What is the GitHub repo name?"
-Format: 361Henrik/repo-name
-If it doesn't exist: offer to create it via GitHub connector.
-
-### 8b. Local folder
-"What is the local folder path on your Mac?"
-Common locations: ~/Developer_ClaudeCode/ or ~/Developer/active/
-
-### 8c. Live URL
-"What is the target live URL?"
-Could be any domain — ask, never assume.
-DNS may be in Squarespace, Vercel, or a client's domain manager.
-
-### 8d. Auth
-"Does this need user authentication / secure sign-in?"
-- YES — Supabase Auth. Env vars: VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY
-- NO — skip
-
-### 8e. Database
-"Does this need a database?"
-- YES — Supabase (PostgreSQL). Existing project or create new?
-  Schema SQL goes in supabase/schema.sql
-- NO — skip
-
-### 8f. AI features
-"Does this need AI features — chat, generation, analysis, Claude API?"
-- YES — which features? Env var: VITE_ANTHROPIC_API_KEY. Model: claude-sonnet-4-20250514
-- NO — skip
-
-### 8g. Other services
-"Any other services? Stripe, email, storage, third-party APIs?"
-Note each with its required env var name.
-
-### 8h. Design tokens
-Write the complete token block based on what was confirmed in Checkpoint 7.
-ATLASdesign tokens are stored in this skill for Henrik's own products.
-For client or new projects: use exactly the values collected in Checkpoint 7.
-
-ATLASdesign (Henrik's own products):
+ATLASdesign tokens (Henrik's own products — use if confirmed):
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Lexend:wght@300;400;500&display=swap');
 @import "tailwindcss";
@@ -190,115 +149,257 @@ ATLASdesign (Henrik's own products):
 }
 ```
 
-For any other project: collect exact hex values and font names during Checkpoint 7 and write the equivalent block.
+For client or new projects: collect ALL values and write an equivalent block.
+Save to docs/design-system.md as well.
+
+Capture: complete CSS token block ready to paste into src/index.css.
 
 ---
 
-## OUTPUT — CREATE THESE FILES
+## CHECKPOINT 8 — CONTENT AND LANGUAGE
 
-Once all 8 checkpoints are complete, produce the following.
-Push to GitHub. Confirm each file before moving on.
+"Does this project have content Claude Code needs to use when building?"
+
+- YES — ask:
+  - What language? (English, Norwegian, other?)
+  - What tone? (Formal, warm, editorial, conversational?)
+  - Where does it come from? (Paste / Google Doc link / already in docs/)
+  Write all content to docs/content.md.
+- NO — skip.
+
+Also ask: "Any SEO, accessibility, or localisation requirements?"
+
+---
+
+## CHECKPOINT 9 — TECHNICAL SETUP
+
+Always runs fully. Ask each item only if not already known.
+
+### 9a. Repo
+Format: 361Henrik/repo-name. Create via GitHub connector if needed.
+
+### 9b. Local folder
+Common: ~/Developer_ClaudeCode/ or ~/Developer/active/
+
+### 9c. Live URL and domain
+Ask — never assume. Note where DNS is managed.
+
+### 9d. Vercel
+Existing project or new? Note project name and team.
+
+### 9e. Auth
+- YES — Supabase Auth. VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY. Email/password or social login?
+- NO — skip.
+
+### 9f. Database
+- YES — Supabase. Existing (get URL + region) or new? Schema in supabase/schema.sql.
+- NO — skip.
+
+### 9g. AI features
+- YES — which features? VITE_ANTHROPIC_API_KEY. Model: claude-sonnet-4-6.
+  Run ai-invocation-builder for prompt specs if needed.
+- NO — skip.
+
+### 9h. Other services
+Stripe, email, storage, maps, third-party APIs? Note each with env var name.
+
+### 9i. Versions
+- Node 20+, React 19, Vite 6, Tailwind v4, TypeScript strict
+- Tailwind v4: uses @import "tailwindcss" and @theme {} — NOT tailwind.config.js
+- Framer Motion: import { motion } from 'framer-motion'
+
+### 9j. Existing integrations
+Analytics, CRM, monitoring, support tools? Note each.
+
+---
+
+## CHECKPOINT 10 — FINAL CONFIRMATION
+
+Read back a one-paragraph summary of everything collected.
+"Does this cover it? Anything missing or wrong?"
+Do not proceed to file creation until Henrik confirms.
+
+---
+
+## OUTPUT — CREATE ALL THESE FILES
+
+---
 
 ### FILE 1: CLAUDE.md (project root)
 
+Complete. No placeholders. No TODOs. Claude Code reads this first.
+
 ```markdown
 # CLAUDE.md — [Project Name]
+Last updated: [date]
 
 ---
 
 ## HOW I WORK — NON-NEGOTIABLE
 
-- Plan mode first. Read this file fully. Show a numbered plan. Wait for approval. Then build.
-- Design before backend. Tokens → shell → sections/screens → features → then API wiring.
-- One section at a time. Build it, show it, wait. Do not rebuild approved things.
+- Read this file fully before doing anything else.
+- Read every file in docs/ before writing any code.
+- Plan mode first. Show a numbered build plan. Wait for approval. Then build.
+- Design before backend: tokens → shell → screens → features → API wiring.
+- One screen at a time. Build it. Show it. Wait. Do not rebuild approved screens.
 - Run `npm run build` before every commit. No broken builds ever pushed to main.
 - Commit format: feat: / fix: / chore: / docs:
-
----
-
-## TECH STACK
-
-Frontend:    React 19 + TypeScript + Vite 6 + Tailwind CSS v4
-Icons:       Lucide React
-Animation:   Framer Motion (imported as 'motion')
-Auth:        [Supabase Auth | None]
-Database:    [Supabase | None]
-AI:          [Anthropic Claude API claude-sonnet-4-20250514 | None]
-Deploy:      Vercel — GitHub main branch auto-deploy
-Live URL:    [URL]
-Repo:        https://github.com/361Henrik/[repo-name]
-
----
-
-## SETUP CHECKLIST
-
-- [ ] npm install — no errors
-- [ ] .env.local exists with all values filled in
-- [ ] npm run dev — loads on localhost:3000
-- [ ] npm run build — no TypeScript errors
+- If you hit a decision not covered here, stop and ask. Do not guess.
 
 ---
 
 ## PROJECT
 
+**Name:** [project name]
 **What it is:** [one sentence]
 **Core purpose:** [why it exists]
-**Audience:** [who uses this]
-**Key outcome:** [what users should think, feel, or do]
+**Audience:** [who, their context]
+**Key outcome:** [what the user should be able to do or feel]
+**Language:** [English / Norwegian / other + tone notes]
 
 ---
 
-## DESIGN SYSTEM
+## EXISTING CODEBASE
 
-[Full @import and @theme block from Checkpoint 8h]
-[Typography rules]
-
----
-
-## USER FLOW
-
-[5-step numbered flow from Checkpoint 5]
+[Starting from scratch.]
+OR
+[Existing repo: [URL]. Already built: [list]. Do NOT rebuild these.]
 
 ---
 
-## SCREENS / SECTIONS TO BUILD
+## TECH STACK
 
-[Numbered list in build order from Checkpoint 6]
+Frontend:    React 19 + TypeScript (strict) + Vite 6 + Tailwind CSS v4
+Icons:       Lucide React
+Animation:   Framer Motion — import { motion } from 'framer-motion'
+Auth:        [Supabase Auth | None]
+Database:    [Supabase PostgreSQL | None]
+AI:          [Anthropic claude-sonnet-4-6 | None]
+Deploy:      Vercel — auto-deploy from main
+Node:        20+
+
+Live URL:    [URL]
+DNS:         [where managed]
+Repo:        https://github.com/361Henrik/[repo-name]
+Vercel:      [project name]
+
+Tailwind v4: uses @import "tailwindcss" and @theme {} — NOT tailwind.config.js
 
 ---
 
-## BUILD ORDER
+## SETUP — BEFORE WRITING ANY CODE
 
-1. src/index.css — full design token replacement
-2. src/App.tsx — shell and navigation
-3. [Each screen/section in order]
-Final: npm run build → fix errors → commit → push to main
+1. npm install — zero errors required
+2. cp .env.example .env.local — fill in every value
+3. npm run dev — confirm loads on localhost:3000
+4. npm run build — zero TypeScript errors required
+5. Read every file in docs/ — required before touching any code
+
+If any step fails: stop and report. Do not work around silently.
 
 ---
 
 ## ENVIRONMENT VARIABLES
 
+[All keys — values in .env.local, never committed]
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_ANTHROPIC_API_KEY=
-[any others from Checkpoint 8g]
+[others]
 
 ---
 
-## CONTENT SOURCE
+## DESIGN SYSTEM
 
-[Where content comes from]
-[If docs/ folder has files — list them here and instruct Claude Code to read them before building]
+[Full @import and @theme block — exact CSS, paste into src/index.css]
+
+Typography:
+- Headings (h1–h3): [font], weight [X]
+- Body / UI: [font], weight [X]
+
+Component rules:
+- Cards: [border-radius, border, background, padding]
+- Primary CTA: [color, hover]
+- Secondary CTA: [color, hover]
+- Nav: [background, text, active state]
+- Inputs: [border, focus, border-radius]
+
+---
+
+## DOCS FOLDER — READ ALL OF THESE FIRST
+
+[List every file in docs/ with one-line description]
+- docs/brief.md — project brief
+- docs/content.md — all copy and content per screen
+- docs/design-system.md — full token reference
+- docs/user-flow.md — step-by-step user journey
+- docs/prototype.md — approved prototype reference
+[add others]
+
+---
+
+## USER FLOW
+
+[Numbered 5-7 step journey]
+
+---
+
+## SCREENS TO BUILD
+
+| # | Screen | Purpose | Tag |
+|---|--------|---------|-----|
+| 1 | [name] | [one line] | MVP |
+| 2 | [name] | [one line] | MVP |
+
+Build MVP screens only this session.
+
+---
+
+## BUILD ORDER
+
+1. src/index.css — full token block. Verify fonts load.
+2. src/App.tsx — shell, layout, navigation
+3. [Screen 1]: [what to build]
+4. [Screen 2]: [what to build]
+[continue for all MVP screens]
+Final: supabase schema → auth → AI → npm run build → fix errors → commit → push
+
+---
+
+## DATABASE
+
+[If Supabase]
+Project URL: [URL]
+Region: [region]
+Schema: supabase/schema.sql — run in Supabase SQL Editor before coding
+
+---
+
+## AI FEATURES
+
+[If Claude API]
+Model: claude-sonnet-4-6
+Specs: docs/ai-specs.md
+
+---
+
+## THIRD-PARTY INTEGRATIONS
+
+[List with brief setup note each]
 
 ---
 
 ## THE ASK
 
-> Read CLAUDE.md fully. Read all files in docs/ if they exist.
-> Enter plan mode. Show me a numbered build plan.
-> Flag any gaps or risks in the current codebase.
+> Read this file fully.
+> Read every file in docs/.
+> Check the existing codebase (if any).
+> Enter plan mode: show a numbered build plan for all MVP screens.
+> Flag any gaps, risks, or missing information.
 > Do NOT write any code yet. Wait for my approval.
 ```
+
+---
 
 ### FILE 2: vercel.json
 ```json
@@ -311,7 +412,7 @@ VITE_ANTHROPIC_API_KEY=
 ```
 
 ### FILE 3: .env.example
-All env var keys from Checkpoint 8. No values.
+All env var keys. No values.
 
 ### FILE 4: .gitignore
 ```
@@ -320,33 +421,93 @@ dist
 .env.local
 .env
 .DS_Store
+*.log
 ```
 
 ### FILE 5: docs/ folder
-Create this folder and populate it with any documents Henrik shared at the start of the session.
-Name files clearly: `brief.md`, `content.md`, `brand-guide.md`, `user-research.md`, etc.
-Claude Code reads everything in docs/ before writing a single line.
+Every project gets this. Populate with everything collected.
+- docs/brief.md
+- docs/content.md (if content exists)
+- docs/design-system.md
+- docs/user-flow.md
+- docs/prototype.md (if prototype was built)
+- docs/ai-specs.md (if ai-invocation-builder was run)
+- Any uploaded documents — renamed clearly
 
 ### FILE 6: supabase/schema.sql
-Only if database is needed. Write initial schema from the brief.
+Only if database needed. Include CREATE TABLE, RLS policies, indexes.
+
+---
+
+## PRE-HANDOFF QUALITY CHECK
+
+Run this before the handoff message. Do not hand off if anything is unchecked.
+
+BRIEF
+- [ ] Project name confirmed
+- [ ] One-sentence purpose written
+- [ ] Audience defined
+- [ ] Core problem clear
+- [ ] Key outcome defined
+- [ ] Language and tone confirmed
+
+DESIGN
+- [ ] Complete CSS token block written
+- [ ] Both fonts confirmed (heading + body)
+- [ ] Component rules noted (card, CTA, nav, inputs)
+- [ ] Saved to docs/design-system.md
+- [ ] Visual reference or prototype in docs/ (if exists)
+
+USER FLOW AND SCREENS
+- [ ] User flow written as numbered steps
+- [ ] All screens listed with MVP / Phase 2 / Later tags
+- [ ] Build order defined
+- [ ] MVP is 6 screens or fewer
+
+TECHNICAL
+- [ ] GitHub repo exists
+- [ ] Local folder path confirmed
+- [ ] Live URL confirmed
+- [ ] DNS location noted
+- [ ] Vercel project noted
+- [ ] All env vars in .env.example
+- [ ] Supabase URL and region confirmed (if needed)
+- [ ] Auth type confirmed (if needed)
+- [ ] AI features and model confirmed (if needed)
+- [ ] Node 20+, React 19, Vite 6, Tailwind v4 noted
+- [ ] Tailwind v4 syntax note in CLAUDE.md
+- [ ] Existing codebase noted (what's already built)
+
+CONTENT AND DOCS
+- [ ] docs/ folder created and populated
+- [ ] Every docs/ file referenced by name in CLAUDE.md
+- [ ] Content language and tone in CLAUDE.md
+
+FILES
+- [ ] CLAUDE.md — complete, no placeholders
+- [ ] vercel.json — written
+- [ ] .env.example — all keys
+- [ ] .gitignore — written
+- [ ] docs/ — all files present
+- [ ] supabase/schema.sql (if needed)
+- [ ] All files pushed to GitHub
 
 ---
 
 ## HANDOFF MESSAGE
-
-After all files are ready:
 
 "Ready. Here's what to do:
 
 1. cd [local-folder-path]
 2. git pull origin main  (or git clone [repo-url] if new)
 3. npm install
-4. cp .env.example .env.local — fill in the values
+4. cp .env.example .env.local — fill in every value
 5. Open Claude Code Desktop → Open Project → [local-folder-path]
 6. Paste this as your first message:
 
-   Read CLAUDE.md fully. Read all files in docs/ if they exist.
-   Enter plan mode. Show me a numbered build plan.
+   Read CLAUDE.md fully. Read every file in docs/ before doing anything else.
+   Enter plan mode. Show me a numbered build plan for all MVP screens.
+   Flag any gaps, risks, or missing information.
    Do NOT write any code yet. Wait for my approval.
 
 You're ready."
@@ -356,12 +517,14 @@ You're ready."
 ## HENRIK'S DEFAULTS
 
 - GitHub org: 361Henrik
-- Stack: React 19 + TypeScript + Vite 6 + Tailwind CSS v4 + Lucide + Framer Motion
-- Deploy: Vercel, auto-deploy from main branch
-- Domain: ask every time — could be any domain
+- Stack: React 19 + TypeScript strict + Vite 6 + Tailwind CSS v4 + Lucide + Framer Motion
+- Deploy: Vercel, auto-deploy from main
+- Domain: ask every session — never assume
 - Database: Supabase if needed
-- AI: Anthropic Claude API if needed
 - Auth: Supabase Auth if needed
-- Skills folder: /Users/henri/.claude/skills/
+- AI: Anthropic claude-sonnet-4-6 if needed
+- Node: 20+
+- Skills: /Users/henri/.claude/skills/
 - No broken builds. Ever.
 - Commit format: feat: / fix: / chore: / docs:
+- Claude Code always enters plan mode first. Always waits for approval.
